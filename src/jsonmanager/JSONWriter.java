@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
@@ -16,7 +17,7 @@ import javax.json.JsonWriter;
 
 /**
  *
- * @author MC
+ * @author mauri
  */
 public class JSONWriter {
     
@@ -27,22 +28,22 @@ public class JSONWriter {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
-        Libro libri[] = new Libro[2];
+        ArrayList<Libro> libri = new ArrayList<Libro>();
         
-        libri[0] = new Libro();
+        libri.add(new Libro());
         
-        libri[0].setGenere("fantasy");
-        libri[0].setTitolo("Lo Hobbit");
-        libri[0].setAutore("J. R. R. Tolkien");
-        libri[0].setPrezzo(9.9f);
+        libri.get(0).setGenere("fantasy");
+        libri.get(0).setTitolo("Lo Hobbit");
+        libri.get(0).setAutore("J. R. R. Tolkien");
+        libri.get(0).setPrezzo(9.9f);
         
         
-        libri[1] = new Libro();
+        libri.add(new Libro());
         
-        libri[1].setGenere("fantasy");
-        libri[1].setTitolo("Il signore degli anelli");
-        libri[1].setAutore("J. R. R. Tolkien");
-        libri[1].setPrezzo(30.00f);
+        libri.get(1).setGenere("fantasy");
+        libri.get(1).setTitolo("Il signore degli anelli");
+        libri.get(1).setAutore("J. R. R. Tolkien");
+        libri.get(1).setPrezzo(30.00f);
     
     
         JsonObjectBuilder rootObject = Json.createObjectBuilder();
@@ -58,8 +59,8 @@ public class JSONWriter {
             bookArray.add(bookObject.build());           
         }
         
-        booksObject.add("Libri", bookArray.build());
-        rootObject.add("Libreria", booksObject.build());
+        booksObject.add("libri", bookArray.build());
+        rootObject.add("libreria", booksObject.build());
         
         OutputStream output = new FileOutputStream(JSON_FILE);
         
