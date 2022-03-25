@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
@@ -26,51 +28,55 @@ public class JSONWriter {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args){
+        try {
+            ArrayList<Libro> libri = new ArrayList<Libro>();
+        
+            libri.add(new Libro());
 
-        ArrayList<Libro> libri = new ArrayList<Libro>();
+            libri.get(0).setGenere("fantasy");
+            libri.get(0).setTitolo("Lo Hobbit");
+            libri.get(0).setAutore("J. R. R. Tolkien");
+            libri.get(0).setPrezzo(9.9f);
+
+
+            libri.add(new Libro());
+
+            libri.get(1).setGenere("fantasy");
+            libri.get(1).setTitolo("Il signore degli anelli");
+            libri.get(1).setAutore("J. R. R. Tolkien");
+            libri.get(1).setPrezzo(30.00f);
+
+
+            JsonObjectBuilder rootObject = Json.createObjectBuilder();
+            JsonObjectBuilder booksObject = Json.createObjectBuilder();
+            JsonArrayBuilder bookArray = Json.createArrayBuilder();
+
+            for (Libro libro : libri){
+                JsonObjectBuilder bookObject =Json.createObjectBuilder();
+                bookObject.add("genere", libro.getGenere());
+                bookObject.add("titolo", libro.getTitolo());
+                bookObject.add("autore", libro.getAutore());
+                bookObject.add("prezzo", libro.getPrezzo());
+                bookArray.add(bookObject.build());           
+            }
+
+            booksObject.add("libri", bookArray.build());
+            rootObject.add("libreria", booksObject.build());
         
-        libri.add(new Libro());
+            OutputStream output = new FileOutputStream(JSON_FILE);
+            JsonWriter jsonWriter = Json.createWriter(output);
         
-        libri.get(0).setGenere("fantasy");
-        libri.get(0).setTitolo("Lo Hobbit");
-        libri.get(0).setAutore("J. R. R. Tolkien");
-        libri.get(0).setPrezzo(9.9f);
-        
-        
-        libri.add(new Libro());
-        
-        libri.get(1).setGenere("fantasy");
-        libri.get(1).setTitolo("Il signore degli anelli");
-        libri.get(1).setAutore("J. R. R. Tolkien");
-        libri.get(1).setPrezzo(30.00f);
-    
-    
-        JsonObjectBuilder rootObject = Json.createObjectBuilder();
-        JsonObjectBuilder booksObject = Json.createObjectBuilder();
-        JsonArrayBuilder bookArray = Json.createArrayBuilder();
-        
-        for (Libro libro : libri){
-            JsonObjectBuilder bookObject =Json.createObjectBuilder();
-            bookObject.add("genere", libro.getGenere());
-            bookObject.add("titolo", libro.getTitolo());
-            bookObject.add("autore", libro.getAutore());
-            bookObject.add("prezzo", libro.getPrezzo());
-            bookArray.add(bookObject.build());           
+            jsonWriter.writeObject(rootObject.build());
+
+            jsonWriter.close();
+
+            output.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JSONWriter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JSONWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        booksObject.add("libri", bookArray.build());
-        rootObject.add("libreria", booksObject.build());
-        
-        OutputStream output = new FileOutputStream(JSON_FILE);
-        
-        JsonWriter jsonWriter = Json.createWriter(output);
-        
-        jsonWriter.writeObject(rootObject.build());
-        
-        jsonWriter.close();
-        
-        output.close();
              
     }
     
