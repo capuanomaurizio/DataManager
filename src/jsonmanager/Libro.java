@@ -8,7 +8,7 @@ package jsonmanager;
 
 /**
  *
- * @author monica
+ * @author mauri
  */
 public class Libro {
     private String genere;
