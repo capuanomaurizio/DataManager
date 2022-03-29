@@ -16,6 +16,13 @@ public class Libro {
     private String autore;
     private float prezzo;
     
+    public Libro(String genere, String titolo, String autore, float prezzo){
+        this.genere = genere;
+        this.titolo = titolo;
+        this.autore = autore;
+        this.prezzo = prezzo;
+    }
+    
     public void setGenere(String genere){
         this.genere = genere;
     }
